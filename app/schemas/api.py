@@ -3,7 +3,6 @@ from typing import Literal
 from pydantic import BaseModel, Field
 
 from app.schemas.interview import InterviewQuestion
-from app.schemas.report import InterviewReport
 
 class StartInterviewResponse(BaseModel):
     interview_id: int = Field(description="Use this id in all further calls for this interview")
@@ -20,9 +19,6 @@ class AnswerResponse(BaseModel):
     max_questions: int
     next_question: InterviewQuestion | None = Field(
         default=None, description="Next question, None when the interview is completed"
-    )
-    report: InterviewReport | None = Field(
-        default=None, description="Final report, only present when the interview is completed"
     )
 
 class ViolationRequest(BaseModel):

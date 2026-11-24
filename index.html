@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary-fixed-dim":"#c3c0ff","surface-container-low":"#eff4ff","tertiary-fixed":"#6ffbbe","error-container":"#ffdad6","tertiary-container":"#006e4b","primary-fixed":"#e2dfff","tertiary":"#005338","on-tertiary-fixed":"#002113","surface-dim":"#cbdbf5","tertiary-fixed-dim":"#4edea3","on-tertiary-container":"#67f4b7","inverse-primary":"#c3c0ff","on-tertiary":"#ffffff","primary":"#3525cd","secondary-fixed-dim":"#bec6e0","on-error":"#ffffff","surface-tint":"#4d44e3","on-primary-fixed":"#0f0069","surface-variant":"#d3e4fe","inverse-surface":"#213145","secondary":"#565e74","on-secondary-container":"#5c647a","inverse-on-surface":"#eaf1ff","on-primary-fixed-variant":"#3323cc","primary-container":"#4f46e5","surface-bright":"#f8f9ff","on-surface-variant":"#464555","surface-container-high":"#dce9ff","surface-container-highest":"#d3e4fe","on-primary":"#ffffff","secondary-fixed":"#dae2fd","outline-variant":"#c7c4d8","on-secondary":"#ffffff","surface-container-lowest":"#ffffff","secondary-container":"#dae2fd","on-primary-container":"#dad7ff","surface-container":"#e5eeff","background":"#f8f9ff","error":"#ba1a1a","on-error-container":"#93000a","on-background":"#0b1c30","on-secondary-fixed":"#131b2e","on-secondary-fixed-variant":"#3f465c","on-tertiary-fixed-variant":"#005236","outline":"#777587","surface":"#f8f9ff","on-surface":"#0b1c30"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"space-lg":"1.5rem","margin-lg":"3rem","space-md":"1rem","margin":"2rem","margin-sm":"1rem","space-xs":"0.25rem","gutter-lg":"2rem","space-sm":"0.5rem","space-xl":"2.5rem","gutter-sm":"1rem","gutter":"1.5rem"},fontFamily:{"headline-sm":["Inter"],"body-sm":["Inter"],"display-lg-mobile":["Inter"],"code-sm":["JetBrains Mono"],"display-lg":["Inter"],"headline-xl":["Inter"],"body-md":["Inter"],"label-lg":["Inter"],"body-lg":["Inter"],"headline-xl-mobile":["Inter"],"code-md":["JetBrains Mono"],"label-md":["Inter"],"headline-md":["Inter"]},fontSize:{"headline-sm":["1.125rem",{"lineHeight":"1.5rem","fontWeight":"600"}],"body-sm":["0.75rem",{"lineHeight":"1.2rem","fontWeight":"400"}],"display-lg-mobile":["2.25rem",{"lineHeight":"2.75rem","letterSpacing":"-0.02em","fontWeight":"700"}],"code-sm":["0.75rem",{"lineHeight":"1.3rem","fontWeight":"400"}],"display-lg":["3rem",{"lineHeight":"3.5rem","letterSpacing":"-0.025em","fontWeight":"700"}],"headline-xl":["2rem",{"lineHeight":"2.5rem","letterSpacing":"-0.02em","fontWeight":"600"}],"body-md":["0.875rem",{"lineHeight":"1.4rem","fontWeight":"400"}],"label-lg":["0.875rem",{"lineHeight":"1.25rem","fontWeight":"500"}],"body-lg":["1rem",{"lineHeight":"1.6rem","fontWeight":"400"}],"headline-xl-mobile":["1.5rem",{"lineHeight":"2rem","letterSpacing":"-0.015em","fontWeight":"600"}],"code-md":["0.875rem",{"lineHeight":"1.5rem","fontWeight":"400"}],"label-md":["0.75rem",{"lineHeight":"1rem","letterSpacing":"0.025em","fontWeight":"500"}],"headline-md":["1.25rem",{"lineHeight":"1.75rem","letterSpacing":"-0.01em","fontWeight":"600"}]}}}};</script></head><body class="bg-background font-body-md text-on-surface antialiased min-h-screen"><aside class="fixed left-0 top-0 h-full w-72 bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between"><div class="flex flex-col"><div class="h-16 px-space-lg flex items-center gap-space-sm"><div class="w-9 h-9 rounded-xl bg-primary flex items-center justify-center text-on-primary shadow-sm"><span class="material-symbols-outlined text-[20px]">neurology</span></div><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface leading-tight tracking-tight">AI Interviewer</span><span class="font-label-md text-label-md text-on-surface-variant font-medium tracking-wider uppercase">Talent Ops</span></div></div><div class="px-space-md pt-space-md"><nav class="flex flex-col gap-space-xs" data-active-classes="bg-primary-container text-on-primary font-label-lg rounded-xl shadow-sm"><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-xl font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="jobs" href="#"><span class="material-symbols-outlined text-[20px]">work</span><span>Jobs</span></a><a aria-current="page" class="flex items-center gap-space-md px-space-md py-space-sm transition-all bg-primary-container text-on-primary font-label-lg rounded-xl shadow-sm" data-path="candidates" href="#"><span class="material-symbols-outlined text-[20px]">groups</span><span>Candidates</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-xl font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="analytics" href="#"><span class="material-symbols-outlined text-[20px]">monitoring</span><span>Analytics</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-xl font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="settings" href="#"><span class="material-symbols-outlined text-[20px]">settings</span><span>Settings</span></a><a class="flex items-center gap-space-md px-space-md py-space-sm rounded-xl font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="help" href="#"><span class="material-symbols-outlined text-[20px]">help</span><span>Help</span></a></nav></div></div><div class="p-space-md"><div class="p-space-md rounded-xl bg-surface-container-low flex items-center gap-space-md"><div class="w-10 h-10 rounded-full bg-primary flex-shrink-0 flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[20px]">person</span></div><div class="flex flex-col min-w-0 flex-1"><span class="font-label-lg text-label-lg text-on-surface font-semibold truncate">Alex Rivera</span><span class="font-body-sm text-body-sm text-on-surface-variant truncate">Head of Technical Talent</span></div><span class="material-symbols-outlined text-on-surface-variant text-[18px] cursor-pointer hover:text-on-surface transition-colors">more_vert</span></div></div></aside><div class="pl-72"><header class="fixed top-0 left-72 right-0 h-16 bg-surface-container-lowest/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 px-space-xl flex items-center justify-between gap-space-lg"><div class="flex items-center gap-space-lg flex-1 max-w-2xl"><div class="flex items-center gap-space-sm px-space-md py-space-xs rounded-xl bg-surface-container text-on-surface cursor-pointer hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined text-[18px] text-primary">domain</span><span class="font-label-lg text-label-lg font-semibold whitespace-nowrap">Distributed Labs Enterprise</span><span class="material-symbols-outlined text-[16px] text-on-surface-variant">arrow_drop_down</span></div><div class="relative flex-1"><span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span><input class="w-full pl-10 pr-4 py-space-sm bg-surface-container-low font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant rounded-xl outline-none focus:bg-surface-container-lowest transition-all" placeholder="Search candidates, job requisitions, metrics..." type="text"/></div></div><div class="flex items-center gap-space-lg"><div class="relative cursor-pointer p-space-xs rounded-lg hover:bg-surface-container-high transition-colors"><span class="material-symbols-outlined text-on-surface-variant text-[22px]">notifications</span><span class="absolute top-1 right-1 w-2 h-2 rounded-full bg-error"></span></div><button class="h-10 px-space-lg bg-primary-container hover:bg-primary text-on-primary font-label-lg text-label-lg rounded-xl flex items-center gap-space-sm shadow-sm transition-all"><span class="material-symbols-outlined text-[18px]">add</span><span>Create Job</span></button><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></header><main class="w-full pt-16 px-space-xl py-space-lg bg-background min-h-screen"><div class="flex flex-col w-full pb-margin-lg">
+<!-- Top Navigation & Action Meta -->
+<div class="flex items-center justify-between gap-space-md mb-space-md">
+<a class="inline-flex items-center gap-space-xs font-label-lg text-label-lg text-secondary hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">arrow_back</span>
+<span>Back to Candidates Table</span>
+</a>
+<div class="flex items-center gap-space-sm font-label-md text-label-md text-secondary">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+        Audit Verified &amp; Signed
+      </span>
+<span class="text-outline-variant">•</span>
+<span class="font-code-sm text-code-sm">HMAC-SHA256: 8f4b...39d1</span>
+</div>
+</div>
+<!-- Executive Assessment Banner -->
+<section class="relative overflow-hidden bg-surface-container-lowest rounded-xl shadow-sm p-space-xl mb-space-lg">
+<div class="absolute -right-24 -top-24 w-96 h-96 rounded-full bg-primary-fixed-dim/20 blur-3xl pointer-events-none"></div>
+<div class="absolute right-48 -bottom-20 w-80 h-80 rounded-full bg-tertiary-fixed-dim/20 blur-2xl pointer-events-none"></div>
+<div class="relative flex flex-col xl:flex-row xl:items-start justify-between gap-space-xl">
+<!-- Candidate Profile & AI Synthesis -->
+<div class="flex-1 min-w-0">
+<div class="flex flex-wrap items-center gap-x-space-md gap-y-space-xs mb-space-xs">
+<div class="flex items-center gap-space-sm">
+<span class="font-headline-xl text-headline-xl text-on-surface font-semibold tracking-tight">Sarah Lin</span>
+<span class="material-symbols-outlined text-primary text-[22px]" style="font-variation-settings: 'FILL' 1;" title="Enterprise Identity Verified">verified</span>
+</div>
+<span class="px-space-sm py-0.5 rounded-lg bg-surface-container text-on-surface-variant font-label-md text-label-md">
+            Candidate ID: CDN-9014
+          </span>
+</div>
+<div class="flex flex-wrap items-center gap-y-1 gap-x-space-md font-body-sm text-body-sm text-secondary mb-space-lg">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">Senior Distributed Systems Architect</span>
+<span class="text-outline-variant">•</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">SES-8492-DIST</span>
+<span class="text-outline-variant">•</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[15px]">event</span>Completed Today, 3:42 PM EST</span>
+<span class="text-outline-variant">•</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[15px]">schedule</span>44m 18s recorded</span>
+</div>
+<!-- Executive AI Synthesis Box -->
+<div class="bg-surface-container-low/70 rounded-xl p-space-lg">
+<div class="flex items-center gap-space-sm mb-space-xs">
+<div class="w-6 h-6 rounded-md bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-[16px]">psychology</span>
+</div>
+<span class="font-label-lg text-label-lg font-semibold text-on-surface uppercase tracking-wider">Executive Synthesis &amp; Consensus Evaluation</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface leading-relaxed">
+            Candidate exhibited exceptional architectural maturity across distributed consensus protocols, event streaming topologies, and live concurrency models. Code implementation for Stream Top-K Frequent Elements was optimal in <code class="font-code-sm text-code-sm px-1.5 py-0.5 rounded bg-surface-container-high text-primary font-semibold">O(N log k)</code> time complexity with zero heap memory overhead. Communication was articulate, composed, and mathematically rigorous.
+          </p>
+</div>
+</div>
+<!-- Recommendation Scorecard & CTA Stack -->
+<div class="xl:w-80 flex flex-col gap-space-md flex-shrink-0">
+<!-- Decision Pill Box -->
+<div class="bg-surface-container-low rounded-xl p-space-md flex flex-col items-center text-center shadow-sm">
+<span class="font-label-md text-label-md text-secondary uppercase tracking-widest font-semibold mb-1">Final Evaluation State</span>
+<div class="w-full py-2 px-3 rounded-lg bg-tertiary-container text-on-tertiary-container flex items-center justify-center gap-2 shadow-sm mb-2">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-headline-sm text-headline-sm tracking-wide font-bold">STRONG HIRE (94 / 100)</span>
+</div>
+<div class="flex items-center gap-1.5 text-tertiary font-label-md text-label-md font-medium">
+<span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
+<span>AI Confidence: High (99.1% statistical fit)</span>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex flex-col gap-space-xs">
+<button class="w-full h-11 px-space-md bg-primary-container hover:bg-primary text-on-primary font-label-lg text-label-lg rounded-xl flex items-center justify-center gap-space-sm shadow-sm transition-all">
+<span class="material-symbols-outlined text-[18px]">calendar_month</span>
+<span>Invite to Final On-Site Panel</span>
+</button>
+<div class="grid grid-cols-2 gap-space-xs">
+<button class="h-10 px-space-sm bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md rounded-xl flex items-center justify-center gap-1.5 transition-colors">
+<span class="material-symbols-outlined text-[18px] text-primary">download</span>
+<span>Evaluation PDF</span>
+</button>
+<button class="h-10 px-space-sm bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md rounded-xl flex items-center justify-center gap-1.5 transition-colors">
+<span class="material-symbols-outlined text-[18px] text-tertiary">sync_alt</span>
+<span>Export to ATS</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 1: Core Dimension Scorecards -->
+<section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-space-md mb-space-lg">
+<!-- Metric 1 -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-lg text-label-lg text-secondary font-medium">Technical Accuracy</span>
+<span class="px-2 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed font-code-sm text-code-sm font-semibold">Top 2%</span>
+</div>
+<div class="flex items-baseline gap-1.5 mb-space-sm">
+<span class="font-headline-xl text-headline-xl text-on-surface font-bold">9.6</span>
+<span class="font-label-lg text-label-lg text-secondary">/ 10</span>
+</div>
+</div>
+<div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden mb-2">
+<div class="bg-primary h-full rounded-full transition-all duration-700" style="width: 96%"></div>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Validated against 1.4k distributed systems evaluations</span>
+</div>
+</div>
+<!-- Metric 2 -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-lg text-label-lg text-secondary font-medium">Architectural Depth</span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface font-code-sm text-code-sm font-semibold">Raft / Paxos</span>
+</div>
+<div class="flex items-baseline gap-1.5 mb-space-sm">
+<span class="font-headline-xl text-headline-xl text-on-surface font-bold">9.4</span>
+<span class="font-label-lg text-label-lg text-secondary">/ 10</span>
+</div>
+</div>
+<div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden mb-2">
+<div class="bg-primary-container h-full rounded-full transition-all duration-700" style="width: 94%"></div>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Deep theoretical grasp of consensus state-machines</span>
+</div>
+</div>
+<!-- Metric 3 -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-lg text-label-lg text-secondary font-medium">Communication &amp; Defense</span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface font-code-sm text-code-sm font-semibold">Structured</span>
+</div>
+<div class="flex items-baseline gap-1.5 mb-space-sm">
+<span class="font-headline-xl text-headline-xl text-on-surface font-bold">9.2</span>
+<span class="font-label-lg text-label-lg text-secondary">/ 10</span>
+</div>
+</div>
+<div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden mb-2">
+<div class="bg-surface-tint h-full rounded-full transition-all duration-700" style="width: 92%"></div>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Structured inductive reasoning and calm technical defense</span>
+</div>
+</div>
+<!-- Metric 4 -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-space-sm">
+<span class="font-label-lg text-label-lg text-secondary font-medium">Complexity Optimization</span>
+<span class="px-2 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-code-sm text-code-sm font-semibold">O(N log k)</span>
+</div>
+<div class="flex items-baseline gap-1.5 mb-space-sm">
+<span class="font-headline-xl text-headline-xl text-on-surface font-bold">9.5</span>
+<span class="font-label-lg text-label-lg text-secondary">/ 10</span>
+</div>
+</div>
+<div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden mb-2">
+<div class="bg-tertiary-container h-full rounded-full transition-all duration-700" style="width: 95%"></div>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Proactive amortized bounds and cache locality reasoning</span>
+</div>
+</div>
+</section>
+<!-- Section 2: Strengths & Engineering Concerns -->
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-space-lg mb-space-lg">
+<!-- Strengths Card -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm">
+<div class="flex items-center gap-space-sm mb-space-md">
+<div class="w-8 h-8 rounded-lg bg-tertiary-fixed flex items-center justify-center text-on-tertiary-fixed">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">thumb_up</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Key Technical Strengths</h2>
+<span class="font-body-sm text-body-sm text-secondary">Demonstrated repeatedly during interactive live challenges</span>
+</div>
+</div>
+<ul class="flex flex-col gap-space-sm">
+<li class="flex items-start gap-space-sm p-space-sm rounded-lg bg-surface-container-low">
+<span class="material-symbols-outlined text-tertiary text-[18px] mt-0.5">check_circle</span>
+<span class="font-body-md text-body-md text-on-surface leading-snug">
+<strong>Bounded Ingestion:</strong> Flawless demonstration of bounded min-heap priority queues for high-velocity stream ingestion, maintaining low CPU cache misses.
+          </span>
+</li>
+<li class="flex items-start gap-space-sm p-space-sm rounded-lg bg-surface-container-low">
+<span class="material-symbols-outlined text-tertiary text-[18px] mt-0.5">check_circle</span>
+<span class="font-body-md text-body-md text-on-surface leading-snug">
+<strong>Distributed Sagas:</strong> Articulated exact trade-offs of Kafka log compaction vs state stores in saga distributed transactions with clear idempotency guarantees.
+          </span>
+</li>
+<li class="flex items-start gap-space-sm p-space-sm rounded-lg bg-surface-container-low">
+<span class="material-symbols-outlined text-tertiary text-[18px] mt-0.5">check_circle</span>
+<span class="font-body-md text-body-md text-on-surface leading-snug">
+<strong>Boundary Verification:</strong> Proactive validation of boundary conditions <code class="font-code-sm text-code-sm bg-surface-container px-1 py-0.5 rounded text-on-surface">-10^4 &lt;= nums[i] &lt;= 10^4</code> and empty stream fallback before prompt intervention.
+          </span>
+</li>
+</ul>
+</div>
+<!-- On-Site Deep Dive Focus Card -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm">
+<div class="flex items-center gap-space-sm mb-space-md">
+<div class="w-8 h-8 rounded-lg bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">explore</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Areas for Deep Dive in On-Site</h2>
+<span class="font-body-sm text-body-sm text-secondary">Recommended focus areas for the staff engineering committee</span>
+</div>
+</div>
+<div class="flex flex-col gap-space-sm">
+<div class="p-space-md rounded-lg bg-surface-container-low">
+<div class="flex items-center gap-space-xs font-label-lg text-label-lg font-semibold text-on-surface mb-1">
+<span class="material-symbols-outlined text-primary text-[18px]">alt_route</span>
+<span>Split-Brain Handling under Catastrophic Partitions</span>
+</div>
+<p class="font-body-md text-body-md text-secondary leading-relaxed">
+            Inquired briefly on raft leader election split-brain handling during asymmetric network partition. Candidate accurately stated the quorum requirement <code class="font-code-sm text-code-sm px-1 py-0.5 rounded bg-surface-container text-on-surface-variant font-medium">(N/2)+1</code>, but ran out of time before detailing pre-vote phases and epoch increment fencing.
+          </p>
+<div class="mt-space-sm pt-space-xs flex items-center gap-space-sm font-label-md text-label-md text-primary">
+<span class="material-symbols-outlined text-[16px]">assignment_turned_in</span>
+<span>Added to On-Site Architecture Script (Panel 2)</span>
+</div>
+</div>
+<div class="p-space-md rounded-lg bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-secondary text-[20px]">group_add</span>
+<div>
+<span class="font-label-lg text-label-lg font-medium text-on-surface block">Engineering Mentorship Experience</span>
+<span class="font-body-sm text-body-sm text-secondary">Assess design doc review and technical mentorship style</span>
+</div>
+</div>
+<span class="font-label-md text-label-md px-2.5 py-1 rounded bg-surface-container text-on-surface-variant">Recommended</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 3: Coding Round Evaluation Section -->
+<section class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden mb-space-lg">
+<!-- Header of Code Assessment -->
+<div class="p-space-lg flex flex-col md:flex-row md:items-center justify-between gap-space-md bg-surface-container-low/40">
+<div>
+<div class="flex items-center gap-space-xs mb-1">
+<span class="font-label-md text-label-md uppercase tracking-wider text-secondary font-semibold">Coding Assessment</span>
+<span class="text-outline-variant">•</span>
+<span class="font-code-sm text-code-sm text-primary font-semibold">Problem #4 of 4</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Stream Top-K Frequent Elements</h2>
+</div>
+<div class="flex flex-wrap items-center gap-space-sm">
+<span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-tertiary-fixed text-on-tertiary-fixed font-label-md text-label-md font-semibold">
+<span class="material-symbols-outlined text-[16px]">task_alt</span>
+          3 / 3 Test Suites Passed
+        </span>
+<span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-surface-container font-code-sm text-code-sm text-secondary">
+<span class="material-symbols-outlined text-[16px]">timer</span>
+          14ms Execution
+        </span>
+<span class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-surface-container font-code-sm text-code-sm text-secondary">
+<span class="material-symbols-outlined text-[16px]">memory</span>
+          Limit: 64MB (Used: 12.8MB)
+        </span>
+</div>
+</div>
+<!-- IDE Container with Syntax Highlighted Display -->
+<div class="grid grid-cols-1 xl:grid-cols-12 bg-inverse-surface text-inverse-on-surface">
+<!-- Code Window -->
+<div class="xl:col-span-8 p-space-lg font-code-md text-code-md overflow-x-auto">
+<div class="flex items-center justify-between pb-space-sm mb-space-md text-secondary-fixed-dim text-code-sm">
+<div class="flex items-center gap-space-sm">
+<span class="flex items-center gap-1 font-semibold text-inverse-on-surface"><span class="material-symbols-outlined text-[16px] text-tertiary-fixed-dim">code</span> solution_stream.py</span>
+<span class="text-outline">•</span>
+<span>Python 3.11 Runtime</span>
+</div>
+<span class="font-code-sm text-code-sm text-tertiary-fixed-dim font-medium">Memory Allocation: O(1) beyond heap</span>
+</div>
+<pre class="leading-relaxed font-code-sm text-code-sm"><span class="text-outline">01</span>  <span class="text-tertiary-fixed">import</span> heapq
+<span class="text-outline">02</span>  <span class="text-tertiary-fixed">from</span> collections <span class="text-tertiary-fixed">import</span> Counter
+<span class="text-outline">03</span>  <span class="text-tertiary-fixed">from</span> typing <span class="text-tertiary-fixed">import</span> List
+<span class="text-outline">04</span>
+<span class="text-outline">05</span>  <span class="text-primary-fixed-dim">class</span> <span class="text-tertiary-fixed-dim font-semibold">Solution</span>:
+<span class="text-outline">06</span>      <span class="text-primary-fixed-dim">def</span> <span class="text-inverse-primary font-semibold">topKFrequent</span>(self, nums: List[<span class="text-primary-fixed-dim">int</span>], k: <span class="text-primary-fixed-dim">int</span>) -&gt; List[<span class="text-primary-fixed-dim">int</span>]:
+<span class="text-outline">07</span>          <span class="text-outline-variant">// O(N) frequency aggregation step</span>
+<span class="text-outline">08</span>          count = Counter(nums)
+<span class="text-outline">09</span>          
+<span class="text-outline">10</span>          <span class="text-outline-variant">// Maintain bounded min-heap of maximum size k -&gt; O(N log k)</span>
+<span class="text-outline">11</span>          min_heap = []
+<span class="text-outline">12</span>          <span class="text-tertiary-fixed">for</span> val, freq <span class="text-tertiary-fixed">in</span> count.items():
+<span class="text-outline">13</span>              heapq.heappush(min_heap, (freq, val))
+<span class="text-outline">14</span>              <span class="text-tertiary-fixed">if</span> len(min_heap) &gt; k:
+<span class="text-outline">15</span>                  heapq.heappop(min_heap)
+<span class="text-outline">16</span>          
+<span class="text-outline">17</span>          <span class="text-outline-variant">// Extract top elements in descending order</span>
+<span class="text-outline">18</span>          <span class="text-tertiary-fixed">return</span> [val <span class="text-tertiary-fixed">for</span> freq, val <span class="text-tertiary-fixed">in</span> sorted(min_heap, reverse=<span class="text-tertiary-fixed">True</span>)]</pre>
+</div>
+<!-- Test Suites & Static AI Diagnostic Pane -->
+<div class="xl:col-span-4 bg-inverse-surface/95 p-space-lg flex flex-col justify-between">
+<div>
+<span class="font-label-md text-label-md uppercase tracking-wider text-secondary-fixed-dim font-semibold block mb-space-sm">Diagnostic Telemetry</span>
+<div class="space-y-space-sm mb-space-md">
+<div class="p-space-sm rounded-lg bg-surface-container-highest/10">
+<div class="flex items-center justify-between text-code-sm mb-1">
+<span class="text-inverse-on-surface">Suite 1: Standard Distribution</span>
+<span class="text-tertiary-fixed-dim font-semibold">PASS (4ms)</span>
+</div>
+<div class="font-body-sm text-body-sm text-secondary-fixed-dim">100k random integers, k=10</div>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container-highest/10">
+<div class="flex items-center justify-between text-code-sm mb-1">
+<span class="text-inverse-on-surface">Suite 2: Boundary Clustered</span>
+<span class="text-tertiary-fixed-dim font-semibold">PASS (6ms)</span>
+</div>
+<div class="font-body-sm text-body-sm text-secondary-fixed-dim">All elements identical, k=1</div>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container-highest/10">
+<div class="flex items-center justify-between text-code-sm mb-1">
+<span class="text-inverse-on-surface">Suite 3: Negative Extremes</span>
+<span class="text-tertiary-fixed-dim font-semibold">PASS (4ms)</span>
+</div>
+<div class="font-body-sm text-body-sm text-secondary-fixed-dim">Range [-10^4, 10^4], k=500</div>
+</div>
+</div>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-highest/10">
+<div class="flex items-center gap-1.5 text-primary-fixed-dim font-label-md text-label-md font-semibold mb-1">
+<span class="material-symbols-outlined text-[16px]">verified_user</span>
+<span>Static Code Reviewer Note</span>
+</div>
+<p class="font-body-sm text-body-sm text-secondary-fixed-dim leading-snug">
+            Optimal algorithmic choice. The candidate consciously avoided the naive O(N log N) sort, explicitly noting thread-safe extensions if streaming updates happen concurrently.
+          </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 4: Proctoring & Session Telemetry Log -->
+<section class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm mb-space-lg">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md mb-space-lg">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-xl bg-tertiary-container flex items-center justify-center text-on-tertiary-container">
+<span class="material-symbols-outlined text-[24px]">security</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Zero Integrity Anomalies Detected</h2>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-md text-label-md font-semibold">Proctor Grade A+</span>
+</div>
+<p class="font-body-sm text-body-sm text-secondary">Multimodal computer vision and acoustic sensors verified uninterrupted focus</p>
+</div>
+</div>
+<div class="flex items-center gap-space-xs font-label-md text-label-md text-secondary">
+<span class="material-symbols-outlined text-[18px] text-tertiary">check</span>
+<span>Secure Sandboxed Environment Verified</span>
+</div>
+</div>
+<!-- Telemetry Metric Grid -->
+<div class="grid grid-cols-2 md:grid-cols-5 gap-space-md">
+<div class="p-space-md rounded-xl bg-surface-container-low flex flex-col justify-between">
+<span class="font-label-md text-label-md text-secondary mb-1">Face Continuity</span>
+<div class="flex items-baseline gap-1">
+<span class="font-headline-md text-headline-md text-on-surface font-bold">100%</span>
+</div>
+<span class="font-body-sm text-body-sm text-tertiary font-medium mt-1">Gaze centered</span>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-low flex flex-col justify-between">
+<span class="font-label-md text-label-md text-secondary mb-1">Audio Baseline</span>
+<div class="flex items-baseline gap-1">
+<span class="font-headline-md text-headline-md text-on-surface font-bold">-48 dB</span>
+</div>
+<span class="font-body-sm text-body-sm text-secondary font-medium mt-1">Nominal (quiet studio)</span>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-low flex flex-col justify-between">
+<span class="font-label-md text-label-md text-secondary mb-1">Tab Switches</span>
+<div class="flex items-baseline gap-1">
+<span class="font-headline-md text-headline-md text-on-surface font-bold">0</span>
+</div>
+<span class="font-body-sm text-body-sm text-tertiary font-medium mt-1">Zero unfocused events</span>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-low flex flex-col justify-between">
+<span class="font-label-md text-label-md text-secondary mb-1">Fullscreen Exits</span>
+<div class="flex items-baseline gap-1">
+<span class="font-headline-md text-headline-md text-on-surface font-bold">0</span>
+</div>
+<span class="font-body-sm text-body-sm text-tertiary font-medium mt-1">Locked window state</span>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-low flex flex-col justify-between">
+<span class="font-label-md text-label-md text-secondary mb-1">Hardware Audit</span>
+<div class="flex items-center gap-1.5 mt-1">
+<span class="material-symbols-outlined text-tertiary text-[20px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-label-lg text-label-lg font-semibold text-on-surface">Verified</span>
+</div>
+<span class="font-body-sm text-body-sm text-secondary">WebRTC + 1080p FHD</span>
+</div>
+</div>
+</section>
+<!-- Section 5: Question-by-Question Accordion Transcript -->
+<section class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm mb-space-lg">
+<div class="flex items-center justify-between mb-space-lg">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Structured Question Transcripts &amp; AI Analysis</h2>
+<span class="font-body-sm text-body-sm text-secondary">Audio recordings parsed into time-stamped semantic nodes</span>
+</div>
+<button class="font-label-md text-label-md text-primary hover:text-on-primary-fixed-variant transition-colors font-semibold" onclick="document.querySelectorAll('details').forEach(d =&gt; d.open = true);">
+        Expand All Questions
+      </button>
+</div>
+<div class="flex flex-col gap-space-sm" id="accordion-list">
+<!-- Question 1 -->
+<details class="group rounded-xl bg-surface-container-low p-space-md transition-all duration-200" open="">
+<summary class="flex items-center justify-between cursor-pointer list-none select-none">
+<div class="flex items-center gap-space-md">
+<span class="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center font-code-sm text-code-sm font-semibold text-on-surface">Q1</span>
+<div>
+<span class="font-label-lg text-label-lg font-semibold text-on-surface block">System Topology &amp; Ingestion Architecture</span>
+<span class="font-body-sm text-body-sm text-secondary">Duration: 8m 42s • 10M events/sec scale scenario</span>
+</div>
+</div>
+<div class="flex items-center gap-space-md">
+<span class="px-2.5 py-1 rounded-md bg-tertiary-fixed text-on-tertiary-fixed font-label-md text-label-md font-bold">9.5 / 10</span>
+<span class="material-symbols-outlined text-secondary transition-transform group-open:rotate-180">expand_more</span>
+</div>
+</summary>
+<div class="mt-space-md pt-space-md border-t-0 space-y-space-sm">
+<div class="p-space-sm rounded-lg bg-surface-container-lowest">
+<span class="font-label-md text-label-md font-semibold text-secondary uppercase tracking-wider block mb-1">Candidate Audio Excerpt:</span>
+<p class="font-body-md text-body-md text-on-surface italic">
+              "To isolate the ingress layer from database write saturation, we place a partitioned streaming buffer upstream. Ingress edge nodes perform zero-copy deserialization using flatbuffers and push to Kafka topic partitions partitioned on hash(tenant_id)."
+            </p>
+</div>
+<div class="flex items-start gap-space-sm p-space-sm rounded-lg bg-primary-fixed/20 text-on-surface">
+<span class="material-symbols-outlined text-primary text-[18px] mt-0.5">smart_toy</span>
+<div class="font-body-sm text-body-sm">
+<strong class="font-semibold text-primary">AI Evaluation:</strong> Demonstrates elite domain mastery of serialization penalties and memory pressure. Correctly highlighted edge TLS termination limits.
+            </div>
+</div>
+</div>
+</details>
+<!-- Question 2 -->
+<details class="group rounded-xl bg-surface-container-low p-space-md transition-all duration-200">
+<summary class="flex items-center justify-between cursor-pointer list-none select-none">
+<div class="flex items-center gap-space-md">
+<span class="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center font-code-sm text-code-sm font-semibold text-on-surface">Q2</span>
+<div>
+<span class="font-label-lg text-label-lg font-semibold text-on-surface block">Raft Consensus Log Replication</span>
+<span class="font-body-sm text-body-sm text-secondary">Duration: 11m 15s • Heartbeats, election timers, &amp; quorum writes</span>
+</div>
+</div>
+<div class="flex items-center gap-space-md">
+<span class="px-2.5 py-1 rounded-md bg-surface-container-high text-on-surface font-label-md text-label-md font-bold">9.2 / 10</span>
+<span class="material-symbols-outlined text-secondary transition-transform group-open:rotate-180">expand_more</span>
+</div>
+</summary>
+<div class="mt-space-md pt-space-md space-y-space-sm">
+<div class="p-space-sm rounded-lg bg-surface-container-lowest">
+<span class="font-label-md text-label-md font-semibold text-secondary uppercase tracking-wider block mb-1">Candidate Audio Excerpt:</span>
+<p class="font-body-md text-body-md text-on-surface italic">
+              "The leader appends the client command to its log and sends AppendEntries RPCs in parallel. An entry is safe to commit only when replicated across a majority quorum. In case of election timeouts, randomized intervals prevent synchronized split-votes."
+            </p>
+</div>
+<div class="flex items-start gap-space-sm p-space-sm rounded-lg bg-primary-fixed/20 text-on-surface">
+<span class="material-symbols-outlined text-primary text-[18px] mt-0.5">smart_toy</span>
+<div class="font-body-sm text-body-sm">
+<strong class="font-semibold text-primary">AI Evaluation:</strong> Clear theoretical breakdown. Only minor gap was skipping pre-vote phases for pathological network splits, flagged above for On-Site interview.
+            </div>
+</div>
+</div>
+</details>
+<!-- Question 3 -->
+<details class="group rounded-xl bg-surface-container-low p-space-md transition-all duration-200" open="">
+<summary class="flex items-center justify-between cursor-pointer list-none select-none">
+<div class="flex items-center gap-space-md">
+<span class="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center font-code-sm text-code-sm font-semibold text-on-surface">Q3</span>
+<div>
+<span class="font-label-lg text-label-lg font-semibold text-on-surface block">Distributed State Management with Kafka</span>
+<span class="font-body-sm text-body-sm text-secondary">Duration: 12m 04s • Exactly-once semantics &amp; transaction coordinators</span>
+</div>
+</div>
+<div class="flex items-center gap-space-md">
+<span class="px-2.5 py-1 rounded-md bg-tertiary-fixed text-on-tertiary-fixed font-label-md text-label-md font-bold">9.7 / 10</span>
+<span class="material-symbols-outlined text-secondary transition-transform group-open:rotate-180">expand_more</span>
+</div>
+</summary>
+<div class="mt-space-md pt-space-md space-y-space-sm">
+<div class="p-space-sm rounded-lg bg-surface-container-lowest">
+<span class="font-label-md text-label-md font-semibold text-secondary uppercase tracking-wider block mb-1">Candidate Audio Excerpt:</span>
+<p class="font-body-md text-body-md text-on-surface italic">
+              "Candidate accurately detailed idempotent producers and the transactional outbox pattern with Debezium CDC to prevent dual-write inconsistencies between PostgreSQL and Kafka log topics."
+            </p>
+</div>
+<div class="flex items-start gap-space-sm p-space-sm rounded-lg bg-primary-fixed/20 text-on-surface">
+<span class="material-symbols-outlined text-primary text-[18px] mt-0.5">smart_toy</span>
+<div class="font-body-sm text-body-sm">
+<strong class="font-semibold text-primary">AI Evaluation:</strong> Exemplary grasp of operational realities. Demonstrated acute awareness of dual-write pitfalls and 2PC performance costs.
+            </div>
+</div>
+</div>
+</details>
+<!-- Question 4 -->
+<details class="group rounded-xl bg-surface-container-low p-space-md transition-all duration-200">
+<summary class="flex items-center justify-between cursor-pointer list-none select-none">
+<div class="flex items-center gap-space-md">
+<span class="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center font-code-sm text-code-sm font-semibold text-on-surface">Q4</span>
+<div>
+<span class="font-label-lg text-label-lg font-semibold text-on-surface block">Algorithmic Implementation &amp; Execution</span>
+<span class="font-body-sm text-body-sm text-secondary">Duration: 12m 17s • Stream Top-K Frequent Elements coding</span>
+</div>
+</div>
+<div class="flex items-center gap-space-md">
+<span class="px-2.5 py-1 rounded-md bg-tertiary-fixed text-on-tertiary-fixed font-label-md text-label-md font-bold">9.5 / 10</span>
+<span class="material-symbols-outlined text-secondary transition-transform group-open:rotate-180">expand_more</span>
+</div>
+</summary>
+<div class="mt-space-md pt-space-md space-y-space-sm">
+<div class="p-space-sm rounded-lg bg-surface-container-lowest">
+<span class="font-label-md text-label-md font-semibold text-secondary uppercase tracking-wider block mb-1">Synthesizer Evaluation:</span>
+<p class="font-body-md text-body-md text-on-surface">
+              Candidate coded live in Python 3.11 using a bounded min-heap of size K. Explained why maintaining K elements in the heap is superior to quickselect when stream inputs arrive asynchronously.
+            </p>
+</div>
+<div class="flex items-start gap-space-sm p-space-sm rounded-lg bg-primary-fixed/20 text-on-surface">
+<span class="material-symbols-outlined text-primary text-[18px] mt-0.5">smart_toy</span>
+<div class="font-body-sm text-body-sm">
+<strong class="font-semibold text-primary">AI Evaluation:</strong> 100% test pass rate. Clean modular structure and standard variable nomenclature.
+            </div>
+</div>
+</div>
+</details>
+</div>
+</section>
+<!-- Section 6: GitHub & Resume Cross-Reference Card -->
+<section class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm">
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-lg">
+<div class="flex items-start gap-space-md">
+<div class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center text-on-surface flex-shrink-0">
+<span class="material-symbols-outlined text-[28px]">account_tree</span>
+</div>
+<div>
+<div class="flex items-center gap-space-sm mb-1">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Resume &amp; Open Source Cross-Reference</h2>
+<span class="px-2.5 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-md text-label-md font-semibold">100% Corroborated</span>
+</div>
+<div class="flex flex-wrap items-center gap-x-space-md gap-y-1 font-body-sm text-body-sm text-secondary">
+<span class="flex items-center gap-1 font-medium text-on-surface">
+<span class="material-symbols-outlined text-[16px] text-error">picture_as_pdf</span>
+              sarah_lin_principal_architect_cv.pdf
+            </span>
+<span class="text-outline-variant">•</span>
+<span class="flex items-center gap-1 font-code-sm text-code-sm text-primary">
+<span class="material-symbols-outlined text-[16px]">terminal</span>
+              github.com/slin-systems
+            </span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mt-space-sm max-w-3xl">
+            Verified candidate is an active contributor to open-source distributed log primitives (Raft and LSM-tree storage engines). Technical depth articulated during Q2 and Q3 precisely mirrors public commit history and RFC proposals.
+          </p>
+</div>
+</div>
+<div class="flex items-center gap-space-sm flex-shrink-0">
+<button class="h-10 px-space-md bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md rounded-xl flex items-center gap-1.5 transition-colors">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+<span>View Parsed Resume</span>
+</button>
+<button class="h-10 px-space-md bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md rounded-xl flex items-center gap-1.5 transition-colors">
+<span class="material-symbols-outlined text-[18px]">open_in_new</span>
+<span>View GitHub Audit</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Sticky Quick Action Bar at Bottom for Reviewers -->
+<div class="sticky bottom-4 mt-space-lg mx-auto w-full max-w-4xl bg-inverse-surface/90 backdrop-blur-xl text-inverse-on-surface p-space-md rounded-2xl shadow-xl flex items-center justify-between gap-space-md z-30">
+<div class="flex items-center gap-space-md">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold text-label-md">
+        SL
+      </div>
+<div>
+<span class="font-label-lg text-label-lg font-semibold block text-inverse-on-surface leading-tight">Sarah Lin</span>
+<span class="font-body-sm text-body-sm text-secondary-fixed-dim">Status: Pending Hiring Manager Approval</span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm">
+<button class="h-9 px-space-md bg-surface-container-highest/20 hover:bg-surface-container-highest/30 text-inverse-on-surface font-label-md text-label-md rounded-xl transition-colors">
+        Leave Review Note
+      </button>
+<button class="h-9 px-space-md bg-error text-on-error font-label-md text-label-md rounded-xl transition-colors hover:opacity-90">
+        Reject
+      </button>
+<button class="h-9 px-space-lg bg-primary-container hover:bg-primary text-on-primary font-label-lg text-label-lg rounded-xl flex items-center gap-1.5 transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[18px]">thumb_up</span>
+<span>Approve Recommendation</span>
+</button>
+</div>
+</div>
+</div></main></div></body></html>
