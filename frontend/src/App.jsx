@@ -235,7 +235,7 @@ export default function App() {
   return (
   <>
     <AppHeader view={view} onStart={() => setView("form")} />
-    <main className={view === "interview" || view === "landing" ? "" : "page " + view}>
+    <main>
       {view === "landing" && <Landing onStart={() => setView("form")} />}
       {view === "form" && <StartForm onSubmit={handleStart} status={status} />}
       {view === "check" && (

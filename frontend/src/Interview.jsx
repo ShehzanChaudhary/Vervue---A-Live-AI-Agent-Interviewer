@@ -179,23 +179,75 @@ export default function Interview({
 
       {/* Completion / ended */}
       {finished && (
-        <div className="bg-surface-container-lowest rounded-xl shadow-md p-space-xl flex flex-col items-center text-center gap-space-md">
-          <span className={"material-symbols-outlined text-4xl " + (completed ? "text-tertiary" : "text-error")}>
-            {completed ? "check_circle" : "info"}
-          </span>
-          <h2 className="font-headline-md text-headline-md text-on-surface">
-            {completed ? "Interview complete" : "Interview ended"}
-          </h2>
-          <p className="font-body-md text-body-md text-on-surface-variant max-w-md">
-            {completed ? "Thank you for your time. Your responses have been submitted." : status}
-          </p>
-          <button
-            type="button"
-            className="px-space-lg py-space-sm bg-primary-container hover:bg-primary text-on-primary rounded-xl font-label-lg text-label-lg transition-colors"
-            onClick={() => location.reload()}
-          >
-            Back to home
-          </button>
+        <div className="max-w-2xl mx-auto w-full flex flex-col gap-space-lg py-space-md">
+          <div className="flex flex-col items-center text-center gap-space-sm">
+            <div
+              className={
+                "w-16 h-16 rounded-full flex items-center justify-center " +
+                (completed ? "bg-tertiary-fixed text-on-tertiary-fixed" : "bg-error-container text-error")
+              }
+            >
+              <span className="material-symbols-outlined text-4xl" style={{ fontVariationSettings: "'FILL' 1" }}>
+                {completed ? "check_circle" : "info"}
+              </span>
+            </div>
+            <h2 className="font-headline-xl text-headline-xl text-on-surface tracking-tight">
+              {completed ? "Interview completed" : "Interview ended"}
+            </h2>
+            <p className="font-body-md text-body-md text-on-surface-variant max-w-md leading-relaxed">
+              {completed
+                ? "Thank you for your time. Your responses have been submitted to the hiring team."
+                : status}
+            </p>
+          </div>
+
+          <div className="bg-surface-container-lowest rounded-2xl shadow-[0_20px_50px_rgba(11,28,48,0.06),0_1px_3px_rgba(11,28,48,0.03)] p-space-lg flex flex-col gap-space-md">
+            <div className="flex items-center gap-space-xs">
+              <span className="material-symbols-outlined text-lg text-primary">description</span>
+              <span className="font-headline-sm text-headline-sm text-on-surface">Session summary</span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-space-sm">
+              <div className="bg-surface-container-low rounded-xl p-space-md flex flex-col gap-1">
+                <span className="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Duration</span>
+                <span className="font-headline-sm text-headline-sm text-on-surface">{formatTime(seconds)}</span>
+              </div>
+              <div className="bg-surface-container-low rounded-xl p-space-md flex flex-col gap-1">
+                <span className="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Questions</span>
+                <span className="font-headline-sm text-headline-sm text-on-surface">
+                  {completed ? `${progress.max} of ${progress.max}` : `${progress.n} of ${progress.max}`}
+                </span>
+              </div>
+              <div className="bg-surface-container-low rounded-xl p-space-md flex flex-col gap-1">
+                <span className="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Rule violations</span>
+                <span
+                  className={
+                    "font-headline-sm text-headline-sm " +
+                    (proctor.violations.length > 0 ? "text-error" : "text-tertiary")
+                  }
+                >
+                  {proctor.violations.length}
+                </span>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-space-sm bg-surface-container rounded-xl p-space-md">
+              <span className="material-symbols-outlined text-lg text-primary shrink-0">verified_user</span>
+              <p className="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+                Evaluation results are shared only with the hiring team. If you have questions about the process, please contact them directly.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex justify-center">
+            <button
+              type="button"
+              className="px-space-xl h-12 bg-primary-container hover:bg-primary text-on-primary rounded-xl font-label-lg text-label-lg font-medium shadow-[0_4px_14px_rgba(79,70,229,0.3)] active:scale-[0.99] transition-all"
+              onClick={() => location.reload()}
+            >
+              Exit session
+            </button>
+          </div>
         </div>
       )}
     </div>
