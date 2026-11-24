@@ -1,0 +1,61 @@
+JOB DESCRIPTION Position: AI Engineer (Fresher / Entry-Level)
+Experience: 0–1 year Employment Type: Full-time Location: [Company
+Location] Department: Engineering / Artificial Intelligence
+
+ABOUT THE ROLE We are looking for a curious and motivated AI Engineer to
+join our team. This entry-level role is suitable for recent graduates
+who have a strong foundation in Python, machine learning, and
+problem-solving. You will work with experienced engineers to build,
+test, and improve AI-powered applications and solutions.
+
+KEY RESPONSIBILITIES 1. Assist in developing, testing, and deploying
+machine learning and AI-based applications. 2. Clean, preprocess,
+analyze, and prepare structured and unstructured data for model
+development. 3. Implement and evaluate machine learning algorithms using
+Python libraries. 4. Explore and work with Generative AI concepts, Large
+Language Models (LLMs), and prompt engineering. 5. Assist in building
+Retrieval-Augmented Generation (RAG) applications and integrating LLM
+APIs. 6. Work with frameworks and tools such as LangChain, LangGraph,
+vector databases, and relevant AI platforms. 7. Develop and integrate
+REST APIs for AI/ML services. 8. Evaluate model performance,
+troubleshoot issues, and document experiments and results. 9.
+Collaborate with software developers, data teams, and other stakeholders
+to deliver AI features. 10. Stay updated with developments in artificial
+intelligence and apply relevant techniques to projects.
+
+REQUIRED QUALIFICATIONS - Bachelor’s degree in Computer Science,
+Information Technology, Artificial Intelligence, Data Science, or a
+related field. - Fresh graduates and candidates with up to 1 year of
+relevant experience may apply. - Good programming knowledge in Python. -
+Understanding of machine learning concepts, including supervised and
+unsupervised learning. - Familiarity with data handling and analysis
+using NumPy and Pandas. - Basic understanding of statistics, data
+preprocessing, and model evaluation. - Familiarity with SQL and
+relational databases. - Understanding of APIs, JSON, and basic software
+development practices. - Strong analytical, communication, and
+problem-solving skills. - Willingness to learn, experiment, and work
+collaboratively.
+
+PREFERRED / GOOD-TO-HAVE SKILLS - Hands-on experience with Scikit-learn,
+TensorFlow, or PyTorch. - Basic knowledge of deep learning, NLP, and
+computer vision. - Exposure to Generative AI, LLMs, prompt engineering,
+and model APIs. - Familiarity with LangChain, LangGraph, or similar
+orchestration frameworks. - Exposure to RAG pipelines, embeddings, and
+vector databases such as FAISS, ChromaDB, or Pinecone. - Familiarity
+with FastAPI or Flask. - Basic knowledge of Git, GitHub, Docker, and
+cloud platforms such as Azure, AWS, or Google Cloud. - Academic,
+internship, or personal projects demonstrating practical AI/ML skills.
+
+WHAT WE OFFER - Opportunity to work on practical AI and machine learning
+projects. - Mentorship and guidance from experienced team members. -
+Exposure to modern AI tools, frameworks, and development practices. -
+Opportunities to learn, contribute, and grow within the engineering
+team.
+
+HOW TO APPLY Interested candidates can submit their updated resume along
+with links to relevant academic, internship, or personal projects.
+
+Note: This is a sample job description for a fresher AI Engineer
+position. The exact responsibilities and required skills may vary
+depending on the company and project requirements.
+

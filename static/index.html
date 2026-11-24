@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Interview</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 800px; margin: 20px auto; padding: 0 12px; }
+    label { display: block; margin-top: 10px; font-weight: bold; }
+    input, textarea { width: 100%; padding: 6px; box-sizing: border-box; }
+    button { margin-top: 12px; padding: 8px 16px; cursor: pointer; }
+    video { width: 100%; background: #000; border-radius: 8px; }
+    #transcript { height: 200px; overflow-y: auto; border: 1px solid #ccc; padding: 8px; margin-top: 10px; }
+    #status { margin: 10px 0; color: #555; }
+    pre { background: #f4f4f4; padding: 10px; overflow-x: auto; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>AI Interview Prep</h1>
+  <p id="status"></p>
+
+  <!-- Step 1: form. Field ke name backend ke Form(...) names se match karte hain -->
+  <form id="start-form">
+    <label>Name <input name="name" required /></label>
+    <label>Email <input name="email" type="email" required /></label>
+    <label>Job description <textarea name="jd_text" rows="6" required></textarea></label>
+    <label>Number of questions <input name="max_questions" type="number" value="6" min="1" max="15" /></label>
+    <label>Resume (PDF or DOCX) <input name="resume" type="file" accept=".pdf,.docx" required /></label>
+    <button id="start-btn" type="submit">Start interview</button>
+  </form>
+
+  <!-- Step 2: interview screen, shuru mein hidden -->
+  <div id="interview" hidden>
+    <video id="avatar" autoplay playsinline></video>
+    <div id="transcript"></div>
+    <button id="end-btn" type="button">End session</button>
+    <pre id="report" hidden></pre>
+  </div>
+
+  <script type="module">
+    import { createClient, AnamEvent } from "https://esm.sh/@anam-ai/js-sdk";
+
+    const form = document.getElementById("start-form");
+    const startBtn = document.getElementById("start-btn");
+    const endBtn = document.getElementById("end-btn");
+    const interviewDiv = document.getElementById("interview");
+    const transcript = document.getElementById("transcript");
+    const statusEl = document.getElementById("status");
+    const reportEl = document.getElementById("report");
+
+    let anamClient = null;
+    let interviewId = null;
+    let lastUserMessageId = null;
+    let busy = false;      // backend answer process ho raha hai
+    let finished = false;  // interview complete ho gaya
+
+    function setStatus(text) {
+      statusEl.textContent = text;
+    }
+
+    function addLine(who, text) {
+      const p = document.createElement("p");
+      p.textContent = `${who}: ${text}`;
+      transcript.appendChild(p);
+      transcript.scrollTop = transcript.scrollHeight;
+    }
+
+    async function errorText(res) {
+      const body = await res.json().catch(() => null);
+      const detail = body && body.detail;
+      if (!detail) return res.statusText;
+      return typeof detail === "string" ? detail : JSON.stringify(detail);
+    }
+
+    async function speak(text) {
+      addLine("Interviewer", text);
+      await anamClient.talk(text);
+    }
+
+    // Anam jab bhi koi message complete hota hai (user ka ya avatar ka), ye chalta hai
+    async function onMessagesUpdated(messages) {
+      const lastUser = [...messages].reverse().find((m) => m.role === "user");
+      if (!lastUser || lastUser.id === lastUserMessageId) return;
+      lastUserMessageId = lastUser.id;
+
+      if (busy || finished) return;
+      busy = true;
+      addLine("You", lastUser.content);
+      setStatus("Evaluating the answer...");
+
+      try {
+        const res = await fetch(`/interviews/${interviewId}/answer`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ answer: lastUser.content }),
+        });
+        if (!res.ok) throw new Error(await errorText(res));
+        const data = await res.json();
+
+        if (data.status === "completed") {
+          finished = true;
+          reportEl.textContent = JSON.stringify(data.report, null, 2);
+          reportEl.hidden = false;
+          setStatus("Interview complete. Below is the report");
+          await speak("That was the last question. Thank you for your time. Your report is ready on the screen.");
+        } else {
+          setStatus(`Question ${data.question_number} of ${data.max_questions}. Aapki baari.`);
+          await speak(data.next_question.question);
+        }
+      } catch (err) {
+        setStatus("Error: " + err.message);
+      } finally {
+        busy = false;
+      }
+    }
+
+    async function startAvatar(firstQuestion) {
+      setStatus("Connecting Avatar...");
+      const res = await fetch("/anam/session-token", { method: "POST" });
+      if (!res.ok) throw new Error(await errorText(res));
+      const { sessionToken } = await res.json();
+
+      anamClient = createClient(sessionToken);
+
+      anamClient.addListener(AnamEvent.CONNECTION_ESTABLISHED, () => {
+        setStatus("Connected. Avatar asking the first question...");
+        speak(firstQuestion);
+      });
+      anamClient.addListener(AnamEvent.MESSAGE_HISTORY_UPDATED, onMessagesUpdated);
+
+      await anamClient.streamToVideoElement("avatar");
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      startBtn.disabled = true;
+      setStatus("Analyzing Resume and JD, It might take some time...");
+
+      try {
+        const res = await fetch("/interviews", { method: "POST", body: new FormData(form) });
+        if (!res.ok) throw new Error(await errorText(res));
+        const data = await res.json();
+
+        interviewId = data.interview_id;
+        form.hidden = true;
+        interviewDiv.hidden = false;
+        await startAvatar(data.question.question);
+      } catch (err) {
+        setStatus("Error: " + err.message);
+        startBtn.disabled = false;
+      }
+    });
+
+    endBtn.addEventListener("click", () => {
+      if (anamClient) anamClient.stopStreaming();
+      setStatus("Session ended.");
+    });
+  </script>
+</body>
+</html>
