@@ -1,8 +1,10 @@
-from fastapi import APIRouter, File, Form, HTTPException, UploadFile
+from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, BackgroundTasks
 
 from app.adapters.parser.file_parser import FileParseError
 from app.adapters.logger.logger import logger
+from app.routes.auth import get_current_hr
 from app.repositories.report_repository import report_repository
+from app.repositories.interview_repository import interview_repository
 from app.schemas.api import AnswerRequest, AnswerResponse, StartInterviewResponse, ViolationResponse, ViolationRequest
 from app.schemas.report import InterviewReport
 from app.services.interview_service import (
@@ -10,16 +12,17 @@ from app.services.interview_service import (
     InterviewNotFoundError,
     interview_service,
 )
+from app.services.job_service import JobNotFoundError, JobInactiveError
 
 router = APIRouter(prefix="/interviews", tags=["interviews"])
 
 @router.post("", response_model=StartInterviewResponse)
-async def start_interview(name: str = Form(...), email: str = Form(...), jd_text: str = Form(...), max_questions: int = Form(6, ge=1, le=15), resume: UploadFile = File(...)):
+async def start_interview(name: str = Form(...), email: str = Form(...), job_id: int = Form(...), resume: UploadFile = File(...)):
     content = await resume.read()
     if not content:
         raise HTTPException(status_code=400, detail="Resume file is empty")
 
-    logger.info(f"POST /interviews, resume file: {resume.filename}")
+    logger.info(f"POST /interviews, job {job_id}, resume file: {resume.filename}")
 
     try:
         return await interview_service.start(
@@ -27,9 +30,12 @@ async def start_interview(name: str = Form(...), email: str = Form(...), jd_text
             email=email,
             resume_content=content,
             resume_filename=resume.filename or "",
-            jd_text=jd_text,
-            max_questions=max_questions,
+            job_id=job_id,
         )
+    except JobNotFoundError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except JobInactiveError as e:
+        raise HTTPException(status_code=409, detail=str(e))
     except FileParseError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
@@ -43,21 +49,29 @@ async def submit_answer(interview_id: int, body: AnswerRequest):
         raise HTTPException(status_code=409, detail=str(e))
 
 @router.post("/{interview_id}/violations", response_model=ViolationResponse)
-async def report_violation(interview_id: int, body: ViolationRequest):
+async def report_violation(interview_id: int, body: ViolationRequest, background_tasks: BackgroundTasks):
     try:
-        return await interview_service.record_violation(interview_id, body.type)
+        response = await interview_service.record_violation(interview_id, body.type)
     except InterviewNotFoundError as e:
         raise HTTPException(status_code=404, detail=str(e))
     except InterviewCompletedError as e:
         raise HTTPException(status_code=409, detail=str(e))
 
-@router.get("/{interview_id}/report", response_model=InterviewReport)
+    if response.status == "ended_by_proctoring":
+        background_tasks.add_task(interview_service.save_partial_report, interview_id)
+
+    return response
+
+@router.get("/{interview_id}/report", response_model=InterviewReport, dependencies=[Depends(get_current_hr)])
 async def get_report(interview_id: int):
+    interview = await interview_repository.get(interview_id)
+    if interview is None:
+        raise HTTPException(status_code=404, detail="Interview not found")
+
     report = await report_repository.get_by_interview(interview_id)
     if report is None:
-        raise HTTPException(
-            status_code=404,
-            detail="Report not found, interview may still be in progress",
-        )
-    return report
+        if interview.status == "in_progress":
+            raise HTTPException(status_code=404, detail="Interview is still in progress")
+        raise HTTPException(status_code=404, detail="Report is not ready yet")
 
+    return report

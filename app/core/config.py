@@ -32,4 +32,11 @@ class Settings(BaseSettings):
     anam_avatar_id: str | None = None
     anam_voice_id: str | None = None
 
+    # HR auth
+    hr_email: str
+    hr_password: str
+    jwt_secret: str
+    jwt_algorithm: str = "HS256"
+    jwt_expire_minutes: int = 480
+
 settings = Settings()

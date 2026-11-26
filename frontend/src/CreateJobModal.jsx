@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const LEVELS = ["Mid-Level", "Senior", "Staff", "Principal"];
+const LEVELS = ["Entry Level", "Mid-Level", "Senior", "Staff/Principal", "Manager/Director"];
 
 const PROCTOR_RULES = [
   { icon: "tab", title: "Tab switch", text: "Candidate switches to another tab or window." },

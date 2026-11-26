@@ -10,6 +10,8 @@ from app.schemas.api import AnswerResponse, StartInterviewResponse, ViolationRes
 from app.services.interview_graph import build_initial_state, build_interview_graph
 from app.services.profile_service import profile_service
 from app.services.report_service import report_service
+from app.services.job_service import job_service
+from app.schemas.job_description import JDProfile
 
 MAX_WARNINGS = 2 
 
@@ -31,25 +33,25 @@ class InterviewService:
     def _config(self, interview_id: int) -> dict:
         return {"configurable": {"thread_id": str(interview_id)}}
 
-    async def start(self, name: str, email: str, resume_content: bytes, resume_filename: str, jd_text: str, max_questions: int) -> StartInterviewResponse:
-        logger.info(f"Starting inteview for {email}")
+    async def start(self, name: str, email: str, resume_content: bytes, resume_filename: str, job_id: int) -> StartInterviewResponse:
+        logger.info(f"Starting interview for {email} on job {job_id}")
+
+        job = await job_service.get_active_job(job_id)
+        jd = JDProfile.model_validate(job.jd_json)
 
         resume = await profile_service.parse_resume(resume_content, resume_filename)
-        jd = await profile_service.parse_jd(jd_text)
         gap = await profile_service.analyze_gap(resume, jd)
 
         user = await user_repository.get_or_create(name, email)
         interview = await interview_repository.create(
             user_id=user.id,
-            resume=resume, 
-            jd=jd,
+            job=job,
+            resume=resume,
             gap=gap,
-            max_questions=max_questions,
-            job_title=jd.job_title
         )
 
         config = self._config(interview.id)
-        initial_state = build_initial_state(resume, jd, gap, max_questions)
+        initial_state = build_initial_state(resume, jd, gap, job.max_questions)
         await self.graph.ainvoke(initial_state, config)
 
         snapshot = await self.graph.aget_state(config)
@@ -102,6 +104,10 @@ class InterviewService:
             jd=values["jd"],
             gap=values["gap"],
             turns=turns,
+            violations=interview.violations,
+            ended_by_proctoring=False,
+            github_url=values["resume"].github_url,
+            repo_notes=values["repo_notes"],
         )
         await report_repository.save(interview_id, report)
 
@@ -110,7 +116,6 @@ class InterviewService:
             question_number=values["question_count"],
             max_questions=values["max_questions"],
             next_question=None,
-            report=report,
         )
 
     async def record_violation(self, interview_id: int, violation_type: str) -> ViolationResponse:
@@ -133,7 +138,6 @@ class InterviewService:
         if count > MAX_WARNINGS:
             await interview_repository.update_status(interview_id, "ended_by_proctoring")
             logger.info(f"Interview {interview_id} ended by proctoring after {count} violations")
-            await self._save_partial_report(interview_id)
             return ViolationResponse(status="ended_by_proctoring", violation_count=count, warnings_left=0)
 
         return ViolationResponse(
@@ -142,21 +146,27 @@ class InterviewService:
             warnings_left=MAX_WARNINGS - count,
         )
 
-    async def _save_partial_report(self, interview_id: int) -> None:
-        snapshot = await self.graph.aget_state(self._config(interview_id))
-        values = snapshot.values
-        turns = values.get("turns", [])
-
-        if not turns:
-            logger.info(f"Interview {interview_id} has no answered questions, partial report skipped")
-            return
-
+    async def save_partial_report(self, interview_id: int) -> None:
+        # Router run it as a backrgound, after response
         try:
+            interview = await interview_repository.get(interview_id)
+            snapshot = await self.graph.aget_state(self._config(interview_id))
+            values = snapshot.values
+            turns = values.get("turns", [])
+
+            if not turns:
+                logger.info(f"Interview {interview_id} has no answered questions, partial report skipped")
+                return
+
             report = await report_service.generate_report(
                 resume=values["resume"],
                 jd=values["jd"],
                 gap=values["gap"],
                 turns=turns,
+                violations=interview.violations,
+                ended_by_proctoring=True,
+                github_url=values["resume"].github_url,
+                repo_notes=values["repo_notes"],
             )
             await report_repository.save(interview_id, report)
             logger.info(f"Partial report saved for interview {interview_id}")

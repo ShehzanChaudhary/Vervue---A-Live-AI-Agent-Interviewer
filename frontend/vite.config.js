@@ -7,6 +7,11 @@ const BACKEND = "http://localhost:8000";
 export default defineConfig({
   plugins: [react()],
   server: {
-    proxy: { "/interviews": BACKEND, "/anam": BACKEND },
+      proxy: {
+      "/interviews": BACKEND,
+      "/anam": BACKEND,
+      "/auth": BACKEND,
+      "/jobs": BACKEND,
+    },
   },
 });
