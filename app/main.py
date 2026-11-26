@@ -12,6 +12,7 @@ from app.routes.anam import router as anam_router
 from app.routes.auth import router as auth_router
 from app.services.auth_service import auth_service
 from app.routes.jobs import router as jobs_router
+from app.routes.public import router as public_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -37,6 +38,7 @@ app.include_router(interview_router)
 app.include_router(anam_router)
 app.include_router(auth_router)
 app.include_router(jobs_router)
+app.include_router(public_router)
 
 @app.get("/health")
 async def health():

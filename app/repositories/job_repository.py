@@ -1,3 +1,4 @@
+import secrets
 from sqlalchemy import select
 
 from app.adapters.db.database import session_factory
@@ -16,6 +17,7 @@ class JobRepository:
         max_questions: int,
     ) -> Job:
         job = Job(
+            public_id=secrets.token_urlsafe(16),
             title=title,
             department=department,
             level=level,
@@ -34,6 +36,11 @@ class JobRepository:
     async def get(self, job_id: int) -> Job | None:
         async with session_factory() as session:
             return await session.get(Job, job_id)
+
+    async def get_by_public_id(self, public_id: str) -> Job | None:
+        async with session_factory() as session:
+            result = await session.execute(select(Job).where(Job.public_id == public_id))
+            return result.scalar_one_or_none()
 
     async def list_all(self) -> list[Job]:
         async with session_factory() as session:

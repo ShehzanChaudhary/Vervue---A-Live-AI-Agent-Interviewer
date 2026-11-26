@@ -24,6 +24,9 @@ class ReportRepository:
             record.overall_score = report.scores.overall_score
             record.scores = report.scores.model_dump(mode="json")
             record.analysis = report.analysis.model_dump(mode="json")
+            record.details = report.model_dump(
+                mode="json", exclude={"job_title", "scores", "analysis"}
+            )
 
             await session.commit()
             await session.refresh(record)
@@ -47,6 +50,7 @@ class ReportRepository:
             job_title=job_title,
             scores=ScoreSummary.model_validate(record.scores),
             analysis=ReportAnalysis.model_validate(record.analysis),
+            **record.details,
         )
 
 report_repository = ReportRepository()

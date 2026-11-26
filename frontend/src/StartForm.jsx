@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 
 const inputClass =
   "w-full px-space-md py-2.5 rounded-xl bg-surface-container-low text-on-surface font-body-md text-body-md focus:bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all placeholder:text-outline/70 shadow-sm";
@@ -10,18 +10,42 @@ function formatSize(bytes) {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
-export default function StartForm({ onSubmit, status }) {
+export default function StartForm({ onSubmit, status, publicId }) {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [job, setJob] = useState(null);
+  const [jobError, setJobError] = useState("");
   const fileRef = useRef(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    async function loadJob() {
+      try {
+        const res = await fetch(`/public/jobs/${encodeURIComponent(publicId)}`);
+        if (res.status === 404) throw new Error("This interview link is not valid.");
+        if (res.status === 409) throw new Error("This job is no longer accepting interviews.");
+        if (!res.ok) throw new Error("Could not load the job. Please try again.");
+        const data = await res.json();
+        if (!cancelled) setJob(data);
+      } catch (err) {
+        if (!cancelled) setJobError(err.message);
+      }
+    }
+    loadJob();
+    return () => {
+      cancelled = true;
+    };
+  }, [publicId]);
 
   async function handle(e) {
     e.preventDefault();
     setLoading(true);
     setError("");
     try {
-      await onSubmit(new FormData(e.currentTarget));
+      const formData = new FormData(e.currentTarget);
+      formData.append("public_id", publicId);
+      await onSubmit(formData);
     } catch (err) {
       setError(err.message);
       setLoading(false);
@@ -31,6 +55,16 @@ export default function StartForm({ onSubmit, status }) {
   function removeFile() {
     if (fileRef.current) fileRef.current.value = "";
     setFile(null);
+  }
+
+  if (jobError) {
+    return (
+      <div className="w-full min-h-[calc(100vh-4rem)] flex items-center justify-center p-gutter-sm bg-surface">
+        <div className="w-full max-w-md bg-surface-container-lowest rounded-2xl shadow-sm p-space-xl text-center">
+          <p className="font-label-lg text-label-lg text-on-surface font-semibold" role="alert">{jobError}</p>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -58,9 +92,14 @@ export default function StartForm({ onSubmit, status }) {
 
         {/* Heading */}
         <div>
-          <h1 className="font-headline-xl text-headline-xl text-on-surface tracking-tight">Set up your interview</h1>
+          <h1 className="font-headline-xl text-headline-xl text-on-surface tracking-tight">
+            {job ? job.title : "Loading..."}
+          </h1>
+          {job?.department && (
+            <p className="font-label-lg text-label-lg text-on-surface-variant mt-1">{job.department}</p>
+          )}
           <p className="font-body-md text-body-md text-on-surface-variant mt-1 leading-relaxed">
-            We use this to tailor the questions to you and the role.
+            We use your details and resume to tailor the questions to you and the role.
           </p>
         </div>
 
@@ -81,33 +120,6 @@ export default function StartForm({ onSubmit, status }) {
                 <span className="material-symbols-outlined absolute right-3 top-2.5 text-on-surface-variant/40 text-lg pointer-events-none">alternate_email</span>
               </div>
             </div>
-          </div>
-
-          {/* JD */}
-          <div className="flex flex-col gap-1.5">
-            <label className={labelClass} htmlFor="jd">Job description</label>
-            <textarea
-              id="jd"
-              name="jd_text"
-              rows="6"
-              required
-              placeholder="Paste the full job posting here"
-              className={inputClass + " resize-y"}
-            />
-          </div>
-
-          {/* Question count */}
-          <div className="flex flex-col gap-1.5">
-            <label className={labelClass} htmlFor="n">Number of questions</label>
-            <input
-              id="n"
-              name="max_questions"
-              type="number"
-              defaultValue={6}
-              min={1}
-              max={15}
-              className={inputClass + " !w-28"}
-            />
           </div>
 
           {/* Resume */}
@@ -197,7 +209,7 @@ export default function StartForm({ onSubmit, status }) {
           <div className="flex flex-col gap-space-sm">
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || !job}
               className="group w-full h-12 px-space-lg rounded-xl bg-primary-container text-on-primary font-label-lg text-label-lg font-medium flex items-center justify-center gap-space-sm shadow-[0_4px_14px_rgba(79,70,229,0.3)] hover:opacity-95 active:scale-[0.99] disabled:opacity-70 disabled:cursor-not-allowed transition-all"
             >
               {loading ? (

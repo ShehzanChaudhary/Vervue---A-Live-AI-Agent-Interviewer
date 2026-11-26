@@ -8,6 +8,9 @@ from app.models.interview import Interview
 from app.models.job import Job
 from app.schemas.gap_analysis import GapAnalysis
 from app.schemas.resume import ResumeProfile
+from app.models.report import ReportRecord
+from app.models.user import User
+from app.schemas.candidate import CandidateRow
 
 class InterviewRepository:
     async def create(
@@ -57,6 +60,32 @@ class InterviewRepository:
                 .order_by(Interview.created_at.desc())
             )
             return list(result.scalars().all())
+
+    async def list_candidates_by_job(self, job_id: int) -> list[CandidateRow]:
+        async with session_factory() as session:
+            result = await session.execute(
+                select(Interview, User, ReportRecord)
+                .join(User, User.id == Interview.user_id)
+                .outerjoin(ReportRecord, ReportRecord.interview_id == Interview.id)
+                .where(Interview.job_id == job_id)
+                .order_by(Interview.created_at.desc())
+            )
+            rows = result.all()
+
+        return [
+            CandidateRow(
+                interview_id=interview.id,
+                name=user.name,
+                email=user.email,
+                status=interview.status,
+                violation_count=len(interview.violations),
+                recommendation=report.analysis.get("recommendation") if report else None,
+                overall_score=report.overall_score if report else None,
+                started_at=interview.created_at,
+                completed_at=report.created_at if report else None,
+            )
+            for interview, user, report in rows
+        ]
 
     async def update_status(
         self, interview_id: int, status: Literal["in_progress", "completed", "ended_by_proctoring"],

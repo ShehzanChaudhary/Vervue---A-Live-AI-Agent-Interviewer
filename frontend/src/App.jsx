@@ -7,6 +7,7 @@ import { useProctoring } from "./useProctoring.js";
 import ProctorBanner from "./ProctorBanner.jsx";
 import CheckScreen from "./CheckScreen.jsx";
 import AppHeader from "./AppHeader.jsx";
+import { useParams } from "react-router-dom";
 
 const BRAND = "Interview Prep"; // yahan apna product name daal do
 
@@ -18,7 +19,8 @@ async function errorText(res) {
 }
 
 export default function App() {
-  const [view, setView] = useState("landing"); // landing | form | interview
+  const { publicId } = useParams();
+  const [view, setView] = useState(publicId ? "form" : "landing"); // landing | form | check | interview
   const [status, setStatus] = useState("");
   const [connected, setConnected] = useState(false);
   const [lines, setLines] = useState([]);
@@ -146,6 +148,8 @@ export default function App() {
         proctor.stop();
         setStatus("Interview complete.");
         await speak("That was the last question. Thank you for your time. Your interview is complete.");
+        anam.current?.stopStreaming();
+        setConnected(false);
       } else {
         applyQuestion(data.next_question);
         setProgress({ n: data.question_number, max: data.max_questions });
@@ -219,7 +223,7 @@ export default function App() {
     interviewId.current = data.interview_id;
     firstQuestion.current = data.question.question;
     lastQuestion.current = data.question.question;
-    setProgress({ n: 1, max: Number(formData.get("max_questions")) || 6 });
+    setProgress({ n: data.question_number, max: data.max_questions });
     setView("check");
     setStatus("");
   }
@@ -234,10 +238,10 @@ export default function App() {
 
   return (
   <>
-    <AppHeader view={view} onStart={() => setView("form")} />
+        <AppHeader view={view} />
     <main>
-      {view === "landing" && <Landing onStart={() => setView("form")} />}
-      {view === "form" && <StartForm onSubmit={handleStart} status={status} />}
+      {view === "landing" && <Landing />}
+      {view === "form" && <StartForm onSubmit={handleStart} status={status} publicId={publicId} />}
       {view === "check" && (
         <CheckScreen
           proctor={proctor}

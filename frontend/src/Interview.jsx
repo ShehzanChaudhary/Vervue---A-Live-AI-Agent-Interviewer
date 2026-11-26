@@ -41,7 +41,7 @@ export default function Interview({
     (coding
       ? "col-span-4 col-start-1 row-start-2 aspect-video rounded-xl shadow-md"
       : "w-full aspect-video max-h-[620px] rounded-xl shadow-xl") +
-    (ended ? " hidden" : "");
+  (finished ? " hidden" : "");
 
   return (
     <div className={containerClass}>

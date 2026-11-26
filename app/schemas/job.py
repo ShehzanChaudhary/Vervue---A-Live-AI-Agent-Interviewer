@@ -24,6 +24,7 @@ class JobResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     id: int
+    public_id: str
     title: str
     department: str | None
     level: str
@@ -31,3 +32,9 @@ class JobResponse(BaseModel):
     max_questions: int
     is_active: bool
     created_at: datetime
+
+class PublicJobResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    title: str
+    department: str | None

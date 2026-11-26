@@ -12,6 +12,7 @@ export default defineConfig({
       "/anam": BACKEND,
       "/auth": BACKEND,
       "/jobs": BACKEND,
+      "/public": BACKEND
     },
   },
 });

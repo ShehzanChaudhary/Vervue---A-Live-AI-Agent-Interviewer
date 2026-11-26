@@ -12,30 +12,31 @@ from app.services.interview_service import (
     InterviewNotFoundError,
     interview_service,
 )
-from app.services.job_service import JobNotFoundError, JobInactiveError
+from app.services.job_service import JobNotFoundError, JobInactiveError, job_service
 
 router = APIRouter(prefix="/interviews", tags=["interviews"])
 
 @router.post("", response_model=StartInterviewResponse)
-async def start_interview(name: str = Form(...), email: str = Form(...), job_id: int = Form(...), resume: UploadFile = File(...)):
+async def start_interview(name: str = Form(...), email: str = Form(...), public_id: str = Form(...), resume: UploadFile = File(...)):
     content = await resume.read()
     if not content:
         raise HTTPException(status_code=400, detail="Resume file is empty")
 
-    logger.info(f"POST /interviews, job {job_id}, resume file: {resume.filename}")
+    logger.info(f"POST /interviews, resume file: {resume.filename}")
 
     try:
+        job = await job_service.get_active_job_by_public_id(public_id)
         return await interview_service.start(
             name=name,
             email=email,
             resume_content=content,
             resume_filename=resume.filename or "",
-            job_id=job_id,
+            job_id=job.id,
         )
-    except JobNotFoundError as e:
-        raise HTTPException(status_code=404, detail=str(e))
-    except JobInactiveError as e:
-        raise HTTPException(status_code=409, detail=str(e))
+    except JobNotFoundError:
+        raise HTTPException(status_code=404, detail="Job not found")
+    except JobInactiveError:
+        raise HTTPException(status_code=409, detail="This job is not accepting interviews")
     except FileParseError as e:
         raise HTTPException(status_code=400, detail=str(e))
 

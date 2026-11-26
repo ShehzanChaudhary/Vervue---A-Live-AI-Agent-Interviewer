@@ -80,7 +80,7 @@ export function useProctoring({ active, onWarning, onLimit }) {
   }, [startCamera, enterFullscreen]);
 
   const stop = useCallback(() => {
-    endedRef.current = false;
+    endedRef.current = true;
     if (streamRef.current) {
       streamRef.current.getTracks().forEach((track) => track.stop());
       streamRef.current = null;

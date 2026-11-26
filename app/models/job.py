@@ -8,6 +8,7 @@ class Job(Base):
     __tablename__ = "jobs"
 
     id: Mapped[int] = mapped_column(primary_key=True)
+    public_id: Mapped[str] = mapped_column(String(32), unique=True, index=True)
     title: Mapped[str] = mapped_column(String(200))
     department: Mapped[str | None] = mapped_column(String(100))
     level: Mapped[str] = mapped_column(String(20))

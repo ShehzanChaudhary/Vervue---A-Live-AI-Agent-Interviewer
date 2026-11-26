@@ -3,7 +3,7 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from app.models.hr_user import HRUser
 from app.repositories.hr_user_repository import hr_user_repository
-from app.schemas.auth import LoginRequest, TokenResponse
+from app.schemas.auth import LoginRequest, TokenResponse, MeResponse
 from app.services.auth_service import (
     InvalidCredentialsError,
     InvalidTokenError,
@@ -45,3 +45,7 @@ async def login(body: LoginRequest):
         raise HTTPException(status_code=401, detail=str(e), headers=UNAUTHORIZED_HEADERS)
 
     return TokenResponse(access_token=token)
+
+@router.get("/me", response_model=MeResponse)
+async def me(hr: HRUser= Depends(get_current_hr)):
+    return MeResponse(id=hr.id, email=hr.email)

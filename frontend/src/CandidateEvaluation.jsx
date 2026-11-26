@@ -1,98 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import HrLayout from "./HrLayout.jsx";
-
-// Mock data. Shape InterviewReport (app/schemas/report.py) jaisa hai, real endpoint se replace hoga.
-const REPORT = {
-  job_title: "Senior Distributed Systems Architect",
-  ended_by_proctoring: false,
-  scores: { questions_answered: 4, technical: 9.6, communication: 9.2, coding: 9.5, overall_score: 94 },
-  analysis: {
-    summary:
-      "Candidate showed strong command of distributed consensus, event streaming and concurrency. The coding solution was correct and used a bounded min-heap. Communication was clear and well structured throughout the interview.",
-    recommendation: "Strong Hire",
-    technical_understanding: "Accurate and deep answers across all topics",
-    communication: "Clear, structured and calm explanations",
-    strengths: [
-      { title: "Bounded ingestion", text: "Used a bounded min-heap for stream ingestion and explained why it beats a full sort." },
-      { title: "Kafka trade-offs", text: "Explained log compaction vs state stores with clear idempotency guarantees." },
-      { title: "Edge cases", text: "Checked boundary conditions and the empty-stream case before being asked." },
-    ],
-    gaps: [
-      {
-        title: "Split-brain handling",
-        text: "Stated the quorum requirement correctly but did not get to pre-vote phases or epoch fencing.",
-        kind: "seen_in_interview",
-      },
-      {
-        title: "Mentorship experience",
-        text: "Not covered in this interview. Worth exploring in a later round.",
-        kind: "not_covered",
-      },
-    ],
-  },
-  coding: {
-    problem: "Stream Top-K Frequent Elements",
-    code: `import heapq
-from collections import Counter
-
-def top_k_frequent(nums, k):
-    count = Counter(nums)
-    min_heap = []
-    for val, freq in count.items():
-        heapq.heappush(min_heap, (freq, val))
-        if len(min_heap) > k:
-            heapq.heappop(min_heap)
-    return [val for freq, val in sorted(min_heap, reverse=True)]`,
-    explanation:
-      "I count frequencies first, then keep a min-heap of size k so the least frequent element is dropped whenever the heap grows beyond k.",
-    evaluation:
-      "Correct and efficient. Avoided the naive full sort and explained the O(N log k) bound clearly.",
-    score: 9.5,
-  },
-  proctoring: { tab_switches: 0, fullscreen_exits: 0, camera_off: 0 },
-  questions: [
-    {
-      number: 1,
-      topic: "System topology and ingestion architecture",
-      question: "How would you isolate the ingestion layer from database write saturation?",
-      score: 9.5,
-      answer:
-        "To isolate the ingress layer from database write saturation, we place a partitioned streaming buffer upstream and push to Kafka partitions keyed on tenant id.",
-      evaluation: "Strong grasp of serialization cost and memory pressure. Mentioned TLS termination limits at the edge.",
-    },
-    {
-      number: 2,
-      topic: "Raft log replication",
-      question: "Walk me through how Raft replicates a log entry.",
-      score: 9.2,
-      answer:
-        "The leader appends the command to its log and sends AppendEntries in parallel. An entry commits once a majority has it. Randomized election timeouts reduce split votes.",
-      evaluation: "Clear explanation. Only gap was skipping pre-vote phases for bad network splits.",
-    },
-    {
-      number: 3,
-      topic: "Distributed state with Kafka",
-      question: "How do you avoid dual-write inconsistency between the database and Kafka?",
-      score: 9.7,
-      answer:
-        "I would use idempotent producers and the transactional outbox pattern to avoid dual-write inconsistency between the database and Kafka.",
-      evaluation: "Good awareness of dual-write pitfalls and the cost of two-phase commit.",
-    },
-    {
-      number: 4,
-      topic: "Coding question",
-      question: "Find the top K frequent elements in a stream.",
-      score: 9.5,
-      answer:
-        "I count frequencies first, then keep a min-heap of size k so the least frequent element is dropped whenever the heap grows beyond k.",
-      evaluation: "Correct solution with clean structure and clear variable names.",
-    },
-  ],
-  github_url: "https://github.com/slin-systems",
-  repo_notes:
-    "Candidate contributes to open-source log and storage projects. Technical depth in the interview matched the public repositories.",
-};
+import { authFetch } from "./auth.js";
 
 const REC_STYLE = {
   "Strong Hire": "bg-tertiary-container text-on-tertiary-container",
@@ -249,8 +158,76 @@ function Transcript({ questions }) {
 }
 
 export default function CandidateEvaluation() {
-  const { id } = useParams(); // abhi mock data hai, backend jodne par isse report fetch hoga
-  const r = REPORT;
+  const { id } = useParams();
+  const [r, setR] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [notReady, setNotReady] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    setError("");
+    setR(null);
+    setNotReady(false);
+
+    authFetch(`/interviews/${id}/report`)
+      .then(async (res) => {
+        if (res.status === 404) {
+          if (!cancelled) setNotReady(true);
+          return;
+        }
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.detail || "Could not load report");
+        if (!cancelled) setR(data);
+      })
+      .catch((e) => {
+        if (!cancelled) setError(e.message);
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [id]);
+
+  if (loading || error || notReady || !r) {
+  return (
+    <HrLayout>
+      <div className="mx-auto max-w-6xl">
+        <Link
+          to="/hr?view=candidates"
+          className="mb-space-md inline-flex items-center gap-space-xs font-label-lg text-label-lg text-secondary transition-colors hover:text-primary"
+        >
+          <Icon name="arrow_back" className="text-[18px]" />
+          <span>Back to Candidates</span>
+        </Link>
+        <Card>
+          {loading ? (
+            <p className="font-body-md text-body-md text-secondary">Loading report...</p>
+          ) : notReady ? (
+            <div className="flex items-start gap-space-md">
+              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-surface-container text-on-surface-variant">
+                <Icon name="hourglass_top" className="text-[24px]" />
+              </div>
+              <div>
+                <h2 className="font-headline-sm text-headline-sm text-on-surface">Report is not ready yet</h2>
+                <p className="mt-1 font-body-md text-body-md text-secondary">
+                  The interview may still be in progress, or the report is still being generated. Please check again in a minute.
+                </p>
+              </div>
+            </div>
+          ) : (
+            <p className="font-body-md text-body-md text-on-surface">{error}</p>
+          )}
+        </Card>
+      </div>
+    </HrLayout>
+  );
+}
+
   const a = r.analysis;
   const s = r.scores;
 
@@ -264,7 +241,7 @@ export default function CandidateEvaluation() {
     <HrLayout>
       <div className="mx-auto max-w-6xl">
         <Link
-          to="/hr"
+          to="/hr?view=candidates"
           className="mb-space-md inline-flex items-center gap-space-xs font-label-lg text-label-lg text-secondary transition-colors hover:text-primary"
         >
           <Icon name="arrow_back" className="text-[18px]" />

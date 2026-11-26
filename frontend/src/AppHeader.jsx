@@ -1,6 +1,6 @@
 const BRAND = "AI Interviewer"; // yahan apna product name daal do
 
-export default function AppHeader({ view, onStart }) {
+export default function AppHeader({ view }) {
   const inSession = view === "check" || view === "interview";
 
   return (
@@ -25,16 +25,6 @@ export default function AppHeader({ view, onStart }) {
             </>
           )}
         </div>
-
-        {view === "landing" && (
-          <button
-            type="button"
-            className="px-space-lg py-space-sm bg-primary-container hover:bg-primary text-on-primary rounded-xl font-label-lg text-label-lg transition-colors"
-            onClick={onStart}
-          >
-            Start interview
-          </button>
-        )}
       </div>
     </header>
   );

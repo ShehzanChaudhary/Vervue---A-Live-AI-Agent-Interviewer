@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import CreateJobModal from "./CreateJobModal.jsx";
+import { getMe, logout, authFetch } from "./auth.js";
 
 const Icon = ({ name, className = "" }) => (
   <span className={`material-symbols-outlined ${className}`} style={{ fontSize: 20 }}>{name}</span>
@@ -8,15 +9,25 @@ const Icon = ({ name, className = "" }) => (
 
 // to: jis route par jaana hai. Jis page abhi nahi bane, unme to nahi hai (disabled dikhte hain)
 const NAV = [
-  { label: "Jobs", icon: "work", to: "/hr", match: (p) => p === "/hr" },
-  { label: "Candidates", icon: "groups", to: "/hr", match: (p) => p.startsWith("/hr/candidates") },
+  { label: "Jobs", icon: "work", to: "/hr", match: (p, s) => p === "/hr" && !s.includes("view=candidates") },
+  {
+    label: "Candidates",
+    icon: "groups",
+    to: "/hr?view=candidates",
+    match: (p, s) => p.startsWith("/hr/candidates") || (p === "/hr" && s.includes("view=candidates")),
+  },
   { label: "Analytics", icon: "monitoring" },
   { label: "Settings", icon: "settings" },
   { label: "Help", icon: "help" },
 ];
 
 function Sidebar() {
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
+  const [me, setMe] = useState(null);
+
+  useEffect(() => {
+    getMe().then(setMe).catch(() => {});
+  }, []);
 
   return (
     <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col justify-between bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)] md:flex">
@@ -33,7 +44,7 @@ function Sidebar() {
 
         <nav className="flex flex-col gap-space-xs px-space-md pt-space-md">
           {NAV.map((n) => {
-            const active = n.match?.(pathname);
+            const active = n.match?.(pathname, search);
             const base = "flex items-center gap-space-md rounded-xl px-space-md py-space-sm font-label-lg text-label-lg transition-all";
 
             if (!n.to) {
@@ -60,26 +71,47 @@ function Sidebar() {
         </nav>
       </div>
 
-      <div className="p-space-md">
+      <div className="flex flex-col gap-space-sm p-space-md">
         <div className="flex items-center gap-space-md rounded-xl bg-surface-container-low p-space-md">
           <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-primary">
             <Icon name="person" className="text-on-primary" />
           </div>
           <div className="flex min-w-0 flex-1 flex-col">
-            <span className="truncate font-label-lg text-label-lg font-semibold text-on-surface">Alex Rivera</span>
-            <span className="truncate font-body-sm text-body-sm text-on-surface-variant">Head of Technical Talent</span>
+            <span className="truncate font-label-lg text-label-lg font-semibold text-on-surface">{me?.email ?? "…"}</span>
+            <span className="truncate font-body-sm text-body-sm text-on-surface-variant">HR account</span>
           </div>
         </div>
+        <button
+          onClick={logout}
+          className="flex items-center justify-center gap-space-sm rounded-xl px-space-md py-space-sm font-label-lg text-label-lg text-on-surface-variant transition-all hover:bg-surface-container-high hover:text-on-surface"
+        >
+          <Icon name="logout" /> Logout
+        </button>
       </div>
     </aside>
   );
 }
 
-export default function HrLayout({ children }) {
+export default function HrLayout({ children, onJobCreated }) {
   const [showCreate, setShowCreate] = useState(false);
 
-  const handlePublish = (job) => {
-    console.log("publish requisition (mock)", job); // backend step 3 mein jodenge
+  const handlePublish = async (job) => {
+    const res = await authFetch("/jobs", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title: job.title,
+        department: job.dept,
+        level: job.level,
+        jd_text: job.jd,
+        max_questions: job.questions,
+      }),
+    });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      throw new Error(typeof data.detail === "string" ? data.detail : "Could not create job");
+    }
+    onJobCreated?.();
   };
 
   return (

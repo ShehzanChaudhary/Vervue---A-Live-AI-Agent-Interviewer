@@ -27,6 +27,13 @@ function SectionTitle({ n, children }) {
 export default function CreateJobModal({ open, onClose, onPublish }) {
   const [form, setForm] = useState(INITIAL);
 
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (open) setError("");
+  }, [open]);
+
   useEffect(() => {
     if (!open) return;
     const onKey = (e) => e.key === "Escape" && onClose();
@@ -37,17 +44,25 @@ export default function CreateJobModal({ open, onClose, onPublish }) {
   if (!open) return null;
 
   const set = (key, value) => setForm((f) => ({ ...f, [key]: value }));
-  const canPublish = form.title.trim() && form.jd.trim();
+  const canPublish = form.title.trim() && form.jd.trim() && !saving;
 
   const discard = () => {
     setForm(INITIAL);
     onClose();
   };
 
-  const publish = () => {
-    onPublish?.({ ...form, title: form.title.trim(), dept: form.dept.trim(), jd: form.jd.trim() });
-    setForm(INITIAL);
-    onClose();
+  const publish = async () => {
+    setError("");
+    setSaving(true);
+    try {
+      await onPublish({ ...form, title: form.title.trim(), dept: form.dept.trim(), jd: form.jd.trim() });
+      setForm(INITIAL);
+      onClose();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -104,7 +119,7 @@ export default function CreateJobModal({ open, onClose, onPublish }) {
 
               <div className="col-span-12 flex flex-col gap-2 pt-1">
                 <span className="font-label-lg text-label-lg font-semibold text-on-surface">Seniority Level</span>
-                <div className="grid grid-cols-2 gap-space-sm md:grid-cols-4">
+                <div className="grid grid-cols-2 gap-space-sm md:grid-cols-5">
                   {LEVELS.map((l) => (
                     <button
                       key={l}
@@ -183,6 +198,12 @@ export default function CreateJobModal({ open, onClose, onPublish }) {
           </section>
         </div>
 
+                {error && (
+          <div className="mx-space-xl mb-space-md rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+            {error}
+          </div>
+        )}
+
         {/* Footer */}
         <div className="flex flex-shrink-0 items-center justify-end gap-space-md bg-surface-container-low px-space-xl py-space-md">
           <button
@@ -199,7 +220,7 @@ export default function CreateJobModal({ open, onClose, onPublish }) {
             className="flex h-10 items-center gap-2 rounded-xl bg-primary-container px-space-xl font-label-lg text-label-lg font-semibold text-on-primary shadow-md transition-all hover:bg-primary disabled:cursor-not-allowed disabled:opacity-50"
           >
             <span className="material-symbols-outlined text-[18px]">rocket_launch</span>
-            <span>Publish Requisition</span>
+            <span>{saving ? "Publishing…" : "Publish Requisition"}</span>
           </button>
         </div>
       </div>

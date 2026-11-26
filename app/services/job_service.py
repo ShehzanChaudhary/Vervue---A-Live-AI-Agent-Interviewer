@@ -3,6 +3,8 @@ from app.models.job import Job
 from app.repositories.job_repository import job_repository
 from app.schemas.job import CreateJobRequest
 from app.services.profile_service import profile_service
+from app.repositories.interview_repository import interview_repository
+from app.schemas.candidate import CandidateRow
 
 class JobNotFoundError(Exception):
     pass
@@ -41,10 +43,22 @@ class JobService:
             raise JobInactiveError(f"Job {job_id} is not accepting interviews")
         return job
 
+    async def get_active_job_by_public_id(self, public_id: str) -> Job:
+        job = await job_repository.get_by_public_id(public_id)
+        if job is None:
+            raise JobNotFoundError("Job not found for this apply link")
+        if not job.is_active:
+            raise JobInactiveError(f"Job {job.id} is not accepting interviews")
+        return job
+
     async def set_active(self, job_id: int, is_active: bool) -> Job:
         updated = await job_repository.set_active(job_id, is_active)
         if not updated:
             raise JobNotFoundError(f"Job {job_id} not found")
         return await self.get_job(job_id)
+
+    async def list_candidates(self, job_id: int) -> list[CandidateRow]:
+        await self.get_job(job_id)
+        return await interview_repository.list_candidates_by_job(job_id)
 
 job_service = JobService()
